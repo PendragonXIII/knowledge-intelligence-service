@@ -32,8 +32,8 @@ class RetrievalService:
             object_id
         )
 
-        content = self.repository_reader.read_file(
-            file_path.name
+        content = file_path.read_text(
+            encoding="utf-8"
         )
 
         title = file_path.stem.replace(
