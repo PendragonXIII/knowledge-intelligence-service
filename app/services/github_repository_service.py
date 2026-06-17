@@ -55,3 +55,24 @@ class GitHubRepositoryService:
         response.raise_for_status()
 
         return response.json()
+    
+    # ######################################
+    # Get Folder Content
+    # ######################################
+
+    def get_folder_content(
+        self,
+        folder_name: str
+    ):
+
+        response = requests.get(
+            f"{self.base_url}/"
+            f"{self.owner}/"
+            f"{self.repository}/contents/"
+            f"{folder_name}",
+            headers=self._headers()
+        )
+
+        response.raise_for_status()
+
+        return response.json()
