@@ -76,3 +76,27 @@ class GitHubRepositoryService:
         response.raise_for_status()
 
         return response.json()
+    
+    # ######################################
+    # Find Object
+    # ######################################
+
+    def find_object(
+        self,
+        object_id: str
+    ):
+
+        capabilities = self.get_folder_content(
+            "Capabilities"
+        )
+
+        for item in capabilities:
+
+            if item["name"].startswith(
+                object_id
+            ):
+                return item["path"]
+
+        raise FileNotFoundError(
+            f"Knowledge Object not found: {object_id}"
+        )
