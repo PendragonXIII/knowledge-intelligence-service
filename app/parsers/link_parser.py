@@ -1,9 +1,9 @@
-# ######################################
-# Link Parser
-# ######################################
+"""
+Link Parser
 
-# Zweck:
-# Extrahiert Obsidian-Links aus Markdown-Dateien.
+Purpose:
+Extract Obsidian links from Markdown content.
+"""
 
 import re
 from typing import List
