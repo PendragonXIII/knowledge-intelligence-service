@@ -5,6 +5,10 @@ from app.services.context_assembly_service import (
     ContextAssemblyService
 )
 
+from app.services.github_repository_service import (
+    GitHubRepositoryService
+)
+
 app = FastAPI(
     title="Knowledge Intelligence Service",
     version="0.1.0"
@@ -21,6 +25,10 @@ retrieval_service = RetrievalService(
 
 context_service = ContextAssemblyService(
     repository_path=repository_path
+)
+
+github_repository_service = (
+    GitHubRepositoryService()
 )
 
 
@@ -62,4 +70,16 @@ def get_context(
     return context_service.build_context(
         object_id=object_id,
         depth=2
+    )
+
+# ######################################
+# GitHub Repository Test
+# ######################################
+
+@app.get("/github-test")
+def github_test():
+
+    return (
+        github_repository_service
+        .get_root_content()
     )
