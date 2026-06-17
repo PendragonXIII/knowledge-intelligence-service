@@ -97,3 +97,33 @@ def github_capabilities_test():
             "Capabilities"
         )
     )
+
+# ######################################
+# GitHub Object Test
+# ######################################
+
+@app.get(
+    "/github-test/object/{object_id}"
+)
+def github_object_test(
+    object_id: str
+):
+
+    path = (
+        github_repository_service
+        .find_object(
+            object_id
+        )
+    )
+
+    content = (
+        github_repository_service
+        .get_file_content(
+            path
+        )
+    )
+
+    return {
+        "path": path,
+        "preview": content[:200]
+    }
