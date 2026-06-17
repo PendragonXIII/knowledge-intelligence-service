@@ -100,3 +100,36 @@ class GitHubRepositoryService:
         raise FileNotFoundError(
             f"Knowledge Object not found: {object_id}"
         )
+    
+    # ######################################
+    # Get File Content
+    # ######################################
+
+    def get_file_content(
+        self,
+        path: str
+    ):
+
+        response = requests.get(
+            f"{self.base_url}/"
+            f"{self.owner}/"
+            f"{self.repository}/contents/"
+            f"{path}",
+            headers=self._headers()
+        )
+
+        response.raise_for_status()
+
+        data = response.json()
+
+        download_url = data[
+            "download_url"
+        ]
+
+        content_response = requests.get(
+            download_url
+        )
+
+        content_response.raise_for_status()
+
+        return content_response.text

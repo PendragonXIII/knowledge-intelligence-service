@@ -48,3 +48,17 @@ def test_find_object_method_exists():
     result = service.find_object
 
     assert result is not None
+
+# ######################################
+# Test Get File Content Method Exists
+# ######################################
+
+def test_get_file_content_method_exists():
+
+    service = (
+        GitHubRepositoryService()
+    )
+
+    result = service.get_file_content
+
+    assert result is not None
