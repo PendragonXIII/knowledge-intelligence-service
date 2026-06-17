@@ -81,21 +81,47 @@ class GitHubRepositoryService:
     # Find Object
     # ######################################
 
+    # ######################################
+    # Find Object
+    # ######################################
+
     def find_object(
         self,
         object_id: str
     ):
 
-        capabilities = self.get_folder_content(
-            "Capabilities"
-        )
+        folders = [
+            "Capabilities",
+            "Contraints",
+            "Standards",
+            "Playbooks",
+            "Roadmaps",
+            "Opportunities",
+            "Learnings",
+            "Architectual Decisions"
+        ]
 
-        for item in capabilities:
+        for folder in folders:
 
-            if item["name"].startswith(
-                object_id
-            ):
-                return item["path"]
+            try:
+
+                items = self.get_folder_content(
+                    folder
+                )
+
+                for item in items:
+
+                    if item[
+                        "name"
+                    ].startswith(
+                        object_id
+                    ):
+                        return item[
+                            "path"
+                        ]
+
+            except Exception:
+                continue
 
         raise FileNotFoundError(
             f"Knowledge Object not found: {object_id}"

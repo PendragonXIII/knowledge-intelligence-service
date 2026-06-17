@@ -30,3 +30,13 @@ def test_retrieve_knowledge_object():
         result.relationships
     ) > 0
     
+def test_retrieval_service_has_github_service():
+
+    service = RetrievalService(
+        repository_path="unused"
+    )
+
+    assert (
+        service.github_repository_service
+        is not None
+    )
