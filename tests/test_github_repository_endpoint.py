@@ -14,3 +14,17 @@ def test_github_repository_service_exists():
     )
 
     assert service is not None
+
+# ######################################
+# Test GitHub Capabilities Endpoint Setup
+# ######################################
+
+def test_github_capabilities_endpoint_setup():
+
+    service = (
+        GitHubRepositoryService()
+    )
+
+    result = service.get_folder_content
+
+    assert result is not None

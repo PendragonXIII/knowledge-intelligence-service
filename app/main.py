@@ -83,3 +83,17 @@ def github_test():
         github_repository_service
         .get_root_content()
     )
+
+# ######################################
+# GitHub Capabilities Test
+# ######################################
+
+@app.get("/github-test/capabilities")
+def github_capabilities_test():
+
+    return (
+        github_repository_service
+        .get_folder_content(
+            "Capabilities"
+        )
+    )
