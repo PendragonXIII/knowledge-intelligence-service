@@ -9,6 +9,12 @@ from app.services.github_repository_service import (
     GitHubRepositoryService
 )
 
+from fastapi import Depends
+
+from app.auth import (
+    verify_api_key
+)
+
 app = FastAPI(
     title="Knowledge Intelligence Service",
     version="0.1.0"
@@ -41,7 +47,8 @@ def health():
 
     return {
         "status": "healthy",
-        "service": "knowledge-intelligence-service"
+        "service": "knowledge-intelligence-service",
+        "deployment_test": "AUTH_DEBUG_V1"
     }
 
 
@@ -51,9 +58,11 @@ def health():
 
 @app.get("/objects/{object_id}")
 def get_object(
-    object_id: str
+    object_id: str,
+    auth=Depends(
+        verify_api_key
+    )
 ):
-
     return retrieval_service.get_object(
         object_id
     )
@@ -64,7 +73,10 @@ def get_object(
 
 @app.get("/context/{object_id}")
 def get_context(
-    object_id: str
+    object_id: str,
+    _: None = Depends(
+        verify_api_key
+    )
 ):
 
     return context_service.build_context(

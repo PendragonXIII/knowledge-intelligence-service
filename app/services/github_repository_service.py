@@ -120,8 +120,17 @@ class GitHubRepositoryService:
                             "path"
                         ]
 
-            except Exception:
-                continue
+            except Exception as e:
+
+                print(
+                    f"Folder Error: {folder}"
+                )
+
+                print(
+                    str(e)
+                )
+
+                raise
 
         raise FileNotFoundError(
             f"Knowledge Object not found: {object_id}"
