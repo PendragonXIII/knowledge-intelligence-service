@@ -59,10 +59,11 @@ def health():
 @app.get("/objects/{object_id}")
 def get_object(
     object_id: str,
-    auth=Depends(
+    auth = Depends(
         verify_api_key
     )
 ):
+
     return retrieval_service.get_object(
         object_id
     )
