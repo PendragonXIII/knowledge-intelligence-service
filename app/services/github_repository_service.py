@@ -235,6 +235,34 @@ class GitHubRepositoryService:
         content_response.raise_for_status()
 
         return content_response.text
+    
+    # ######################################
+    # Get File Metadata
+    # ######################################
+
+    def get_file_metadata(
+        self,
+        path: str,
+        repository: str | None = None
+    ):
+
+        repository_name = (
+            repository
+            if repository
+            else self.repository
+        )
+
+        response = requests.get(
+            f"{self.base_url}/"
+            f"{self.owner}/"
+            f"{repository_name}/contents/"
+            f"{path}",
+            headers=self._headers()
+        )
+
+        response.raise_for_status()
+
+        return response.json()
         
     # ######################################
     # Create File
@@ -273,6 +301,69 @@ class GitHubRepositoryService:
 
                 "content":
                     encoded_content
+            }
+        )
+
+        response.raise_for_status()
+
+        return response.json()
+    
+    # ######################################
+    # Update File
+    # ######################################
+
+    def update_file(
+        self,
+        path: str,
+        content: str,
+        sha: str | None,
+        message: str
+    ):
+
+        import base64
+
+        if not sha:
+
+            metadata = (
+                self.get_file_metadata(
+                    path
+                )
+            )
+
+            sha = metadata[
+                "sha"
+            ]
+
+        encoded_content = (
+            base64.b64encode(
+                content.encode(
+                    "utf-8"
+                )
+            )
+            .decode(
+                "utf-8"
+            )
+        )
+
+        response = requests.put(
+
+            f"{self.base_url}/"
+            f"{self.owner}/"
+            f"{self.repository}/contents/"
+            f"{path}",
+
+            headers=self._headers(),
+
+            json={
+
+                "message":
+                    message,
+
+                "content":
+                    encoded_content,
+
+                "sha":
+                    sha
             }
         )
 

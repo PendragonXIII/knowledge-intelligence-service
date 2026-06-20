@@ -54,6 +54,19 @@ def test_update_file():
         RepositoryWriteService()
     )
 
+    service.github_service = (
+        Mock()
+    )
+
+    service.github_service.update_file.return_value = {
+
+        "commit": {
+
+            "sha":
+                "456"
+        }
+    }
+
     result = (
         service.update_file(
             {
@@ -66,14 +79,8 @@ def test_update_file():
         )
     )
 
-    assert result == {
-
-        "status":
-            "pending",
-
-        "operation":
-            "update_file",
-
-        "path":
-            "Capabilities/EID.09.md"
-    }
+    assert result[
+        "commit"
+    ][
+        "sha"
+    ] == "456"

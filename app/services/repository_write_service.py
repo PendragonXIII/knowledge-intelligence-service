@@ -50,16 +50,23 @@ class RepositoryWriteService:
         request: dict
     ):
 
-        return {
+        return (
+            self.github_service.update_file(
 
-            "status":
-                "pending",
-
-            "operation":
-                "update_file",
-
-            "path":
-                request[
+                path=request[
                     "path"
-                ]
-        }
+                ],
+
+                content=request[
+                    "content"
+                ],
+
+                sha=request.get(
+                    "sha"
+                ),
+
+                message=(
+                    "Update file"
+                )
+            )
+        )   

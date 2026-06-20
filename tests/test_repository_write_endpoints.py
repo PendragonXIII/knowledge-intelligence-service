@@ -62,18 +62,41 @@ def test_create_repository_file():
 
 def test_update_repository_file():
 
-    response = client.post(
-        "/repository/write/update",
-        json={
-            "path":
-                "Capabilities/EID.09.md",
+    with patch(
+        "app.main.repository_write_service"
+    ) as mock_service:
 
-            "content":
-                "Updated"
+        mock_service.update_file.return_value = {
+
+            "commit": {
+
+                "sha":
+                    "456"
+            }
         }
-    )
+
+        response = client.post(
+            "/repository/write/update",
+
+            json={
+
+                "path":
+                    "Capabilities/EID.09.md",
+
+                "content":
+                    "Updated"
+            }
+        )
 
     assert (
         response.status_code
         == 200
     )
+
+    data = response.json()
+
+    assert data[
+        "commit"
+    ][
+        "sha"
+    ] == "456"
