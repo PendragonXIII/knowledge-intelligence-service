@@ -1,3 +1,5 @@
+from unittest.mock import Mock
+
 from app.services.repository_content_service import (
     RepositoryContentService
 )
@@ -13,6 +15,12 @@ def test_get_repository_file():
         RepositoryContentService()
     )
 
+    service.github_service = Mock()
+
+    service.github_service.get_file_by_path.return_value = (
+        "Example README"
+    )
+
     content = (
         service.get_repository_file(
             repository=(
@@ -22,7 +30,9 @@ def test_get_repository_file():
         )
     )
 
-    assert content is not None
+    assert content == (
+        "Example README"
+    )
 
     assert len(
         content
@@ -38,6 +48,15 @@ def test_get_repository_folder():
         RepositoryContentService()
     )
 
+    service.github_service = Mock()
+
+    service.github_service.get_folder_content.return_value = [
+        {
+            "name":
+                "EID.08 Repository Retrieval Intelligence.md"
+        }
+    ]
+
     result = (
         service.get_repository_folder(
             "Capabilities"
@@ -48,4 +67,4 @@ def test_get_repository_folder():
 
     assert len(
         result
-    ) > 0
+    ) == 1

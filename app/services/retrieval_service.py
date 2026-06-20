@@ -3,21 +3,32 @@ from pathlib import Path
 from app.parsers.markdown_parser import MarkdownParser
 from app.repository.object_resolver import ObjectResolver
 from app.repository.repository_reader import RepositoryReader
-from app.services.github_repository_service import (
-    GitHubRepositoryService
-)
 
 
 class RetrievalService:
 
     def __init__(self, repository_path: str):
 
-        self.github_repository_service = (
-            GitHubRepositoryService()
+        self.repository_reader = (
+            RepositoryReader(
+                repository_path
+            )
+        )
+
+        self.object_resolver = (
+            ObjectResolver(
+                repository_path
+            )
         )
 
         self.markdown_parser = (
             MarkdownParser()
+        )
+
+        self.object_resolver = (
+            ObjectResolver(
+                repository_path
+            )
         )
 
     # ######################################
@@ -30,22 +41,26 @@ class RetrievalService:
     ):
 
         file_path = (
-            self.github_repository_service
-            .find_object(
+            self.object_resolver
+            .resolve_object(
                 object_id
             )
         )
 
         content = (
-            self.github_repository_service
-            .get_file_content(
-                file_path
+            self.repository_reader
+            .read_file(
+                str(
+                    file_path.relative_to(
+                        self.repository_reader
+                        .repository_path
+                    )
+                )
             )
         )
 
         filename = (
-            file_path
-            .split("/")[-1]
+            file_path.name
         )
 
         title = filename.replace(
@@ -57,8 +72,7 @@ class RetrievalService:
         )
 
         object_type = (
-            file_path
-            .split("/")[0]
+            file_path.parts[0]
         )
 
         return self.markdown_parser.parse(

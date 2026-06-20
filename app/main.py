@@ -19,6 +19,10 @@ from app.services.repository_content_service import (
     RepositoryContentService
 )
 
+from app.services.repository_write_service import (
+    RepositoryWriteService
+)
+
 app = FastAPI(
     title="Knowledge Intelligence Service",
     version="0.1.0",
@@ -48,6 +52,10 @@ github_repository_service = (
 
 repository_content_service = (
     RepositoryContentService()
+)
+
+repository_write_service = (
+    RepositoryWriteService()
 )
 
 
@@ -192,5 +200,39 @@ def get_repository_folder(
         repository_content_service
         .get_repository_folder(
             folder_name
+        )
+    )
+
+# ######################################
+# Repository Write Create
+# ######################################
+
+@app.post(
+    "/repository/write/create"
+)
+def create_repository_file(
+    request: dict
+):
+
+    return (
+        repository_write_service.create_file(
+            request
+        )
+    )
+
+# ######################################
+# Repository Write Update
+# ######################################
+
+@app.post(
+    "/repository/write/update"
+)
+def update_repository_file(
+    request: dict
+):
+
+    return (
+        repository_write_service.update_file(
+            request
         )
     )

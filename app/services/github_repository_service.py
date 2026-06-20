@@ -2,6 +2,10 @@ import os
 
 import requests
 
+from app.services.github_configuration_service import (
+    GitHubConfigurationService
+)
+
 
 # ######################################
 # GitHub Repository Service
@@ -17,8 +21,16 @@ class GitHubRepositoryService:
             "Knowledge-Intelligence-Platform"
         )
 
-        self.token = os.getenv(
-            "GITHUB_TOKEN"
+        configuration_service = (
+            GitHubConfigurationService()
+        )
+
+        self.configuration_service = (
+            configuration_service
+        )
+
+        self.token = (
+            configuration_service.get_github_token()
         )
 
         self.base_url = (
@@ -38,6 +50,19 @@ class GitHubRepositoryService:
             "Accept":
                 "application/vnd.github+json"
         }
+    
+    # ######################################
+    # Has GitHub Token
+    # ######################################
+
+    def has_github_token(
+        self
+    ):
+
+        return (
+            self.configuration_service
+            .has_github_token()
+        )
 
     # ######################################
     # List Root Content
@@ -208,3 +233,26 @@ class GitHubRepositoryService:
         content_response.raise_for_status()
 
         return content_response.text
+        
+    # ######################################
+    # Create File
+    # ######################################
+
+    def create_file(
+        self,
+        path: str,
+        content: str,
+        message: str
+    ):
+
+        return {
+
+            "path":
+                path,
+
+            "content":
+                content,
+
+            "message":
+                message
+        }

@@ -1,5 +1,5 @@
-from app.services.github_repository_service import (
-    GitHubRepositoryService
+from app.repository.object_resolver import (
+    ObjectResolver
 )
 
 from app.services.knowledge_extraction_service import (
@@ -13,10 +13,17 @@ from app.services.knowledge_extraction_service import (
 
 class KnowledgeComparisonService:
 
-    def __init__(self):
+    def __init__(
+        self,
+        repository_path: str = (
+            "Garden Knowledge"
+        )
+    ):
 
-        self.github_service = (
-            GitHubRepositoryService()
+        self.object_resolver = (
+            ObjectResolver(
+                repository_path
+            )
         )
 
         self.extraction_service = (
@@ -34,13 +41,16 @@ class KnowledgeComparisonService:
 
         try:
 
-            self.github_service.find_object(
+            self.object_resolver.resolve_object(
                 object_id
             )
 
             return True
 
-        except FileNotFoundError:
+        except (
+            FileNotFoundError,
+            ValueError
+        ):
 
             return False
         

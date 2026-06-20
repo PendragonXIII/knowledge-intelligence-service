@@ -410,3 +410,135 @@ New Content
 New Content
 """
     )
+
+# ######################################
+# Generate Repository Modification
+# ######################################
+
+def test_generate_repository_modification():
+
+    service = (
+        KnowledgeMaintenanceService()
+    )
+
+    result = (
+        service.generate_repository_modification(
+            {
+                "action":
+                    "create",
+
+                "object_id":
+                    "LRN.999"
+            }
+        )
+    )
+
+    assert result == {
+
+        "operation":
+            "create_file",
+
+        "path":
+            "Learnings/LRN.999.md"
+    }
+
+# ######################################
+# Create File Modification
+# ######################################
+
+def test_create_file_modification():
+
+    service = (
+        KnowledgeMaintenanceService()
+    )
+
+    result = (
+        service.create_file_modification(
+            "LRN.999"
+        )
+    )
+
+    assert (
+        result[
+            "path"
+        ]
+        ==
+        "Learnings/LRN.999.md"
+    )
+
+    assert (
+        "## Purpose"
+        in
+        result[
+            "content"
+        ]
+    )
+
+# ######################################
+# Generate Write Request
+# ######################################
+
+def test_generate_write_request():
+
+    service = (
+        KnowledgeMaintenanceService()
+    )
+
+    result = (
+        service.generate_write_request(
+            repository=
+                "Garden Knowledge",
+
+            modification={
+                "path":
+                    "Learnings/LRN.999.md",
+
+                "content":
+                    "Example"
+            }
+        )
+    )
+
+    assert result == {
+
+        "repository":
+            "Garden Knowledge",
+
+        "path":
+            "Learnings/LRN.999.md",
+
+        "content":
+            "Example"
+    }
+
+# ######################################
+# Generate File Update Request
+# ######################################
+
+def test_generate_file_update_request():
+
+    service = (
+        KnowledgeMaintenanceService()
+    )
+
+    result = (
+        service.generate_file_update_request(
+            path=
+                "Capabilities/EID.09.md",
+
+            content=
+                "Updated"
+        )
+    )
+
+    assert result == {
+
+        "operation":
+            "update_file",
+
+        "path":
+            "Capabilities/EID.09.md",
+
+        "content":
+            "Updated"
+    }

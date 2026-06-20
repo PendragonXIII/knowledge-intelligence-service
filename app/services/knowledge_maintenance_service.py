@@ -296,3 +296,143 @@ class KnowledgeMaintenanceService:
     ):
 
         return content
+    
+    # ######################################
+    # Generate Repository Modification
+    # ######################################
+
+    def generate_repository_modification(
+        self,
+        action: dict
+    ):
+
+        object_id = action[
+            "object_id"
+        ]
+
+        if object_id.startswith(
+            "LRN."
+        ):
+
+            folder = (
+                "Learnings"
+            )
+
+        elif object_id.startswith(
+            "EID."
+        ):
+
+            folder = (
+                "Capabilities"
+            )
+
+        else:
+
+            folder = (
+                "Unknown"
+            )
+
+        return {
+
+            "operation":
+                "create_file",
+
+            "path":
+                f"{folder}/"
+                f"{object_id}.md"
+        }
+    
+    # ######################################
+    # Create File Modification
+    # ######################################
+
+    def create_file_modification(
+        self,
+        object_id: str
+    ):
+
+        template = (
+            self.generate_file_template(
+                object_id
+            )
+        )
+
+        if object_id.startswith(
+            "LRN."
+        ):
+
+            folder = (
+                "Learnings"
+            )
+
+        elif object_id.startswith(
+            "EID."
+        ):
+
+            folder = (
+                "Capabilities"
+            )
+
+        else:
+
+            folder = (
+                "Unknown"
+            )
+
+        return {
+
+            "path":
+                f"{folder}/"
+                f"{object_id}.md",
+
+            "content":
+                template
+        }
+    
+    # ######################################
+    # Generate Write Request
+    # ######################################
+
+    def generate_write_request(
+        self,
+        repository: str,
+        modification: dict
+    ):
+
+        return {
+
+            "repository":
+                repository,
+
+            "path":
+                modification[
+                    "path"
+                ],
+
+            "content":
+                modification[
+                    "content"
+                ]
+        }
+    
+    # ######################################
+    # Generate File Update Request
+    # ######################################
+
+    def generate_file_update_request(
+        self,
+        path: str,
+        content: str
+    ):
+
+        return {
+
+            "operation":
+                "update_file",
+
+            "path":
+                path,
+
+            "content":
+                content
+        }
