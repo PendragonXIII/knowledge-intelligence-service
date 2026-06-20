@@ -24,6 +24,11 @@ def verify_api_key(
         "API_KEY"
     )
 
+    print(
+        "API KEY RECEIVED:",
+        x_api_key
+    )
+
     if x_api_key != expected_key:
 
         raise HTTPException(
