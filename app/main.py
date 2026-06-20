@@ -23,6 +23,10 @@ from app.services.repository_write_service import (
     RepositoryWriteService
 )
 
+from app.models.repository_write_request import (
+    RepositoryWriteRequest
+)
+
 from app.services.knowledge_review_context_service import (
     KnowledgeReviewContextService
 )
@@ -244,12 +248,12 @@ def get_review_context(
     "/repository/write/create"
 )
 def create_repository_file(
-    request: dict
+    request: RepositoryWriteRequest
 ):
 
     return (
         repository_write_service.create_file(
-            request
+            request.model_dump()
         )
     )
 
@@ -261,11 +265,11 @@ def create_repository_file(
     "/repository/write/update"
 )
 def update_repository_file(
-    request: dict
+    request: RepositoryWriteRequest
 ):
 
     return (
         repository_write_service.update_file(
-            request
+            request.model_dump()
         )
     )
