@@ -208,30 +208,49 @@ def test_create_file():
         GitHubRepositoryService()
     )
 
-    result = (
-        service.create_file(
-            path=
-                "Learnings/LRN.999.md",
-
-            content=
-                "Example",
-
-            message=
-                "Create learning"
-        )
+    mock_response = (
+        Mock()
     )
 
-    assert result == {
+    mock_response.raise_for_status.return_value = (
+        None
+    )
 
-        "path":
-            "Learnings/LRN.999.md",
+    mock_response.json.return_value = {
 
-        "content":
-            "Example",
+        "commit": {
 
-        "message":
-            "Create learning"
+            "sha":
+                "123"
+        }
     }
+
+    with patch(
+        "requests.put"
+    ) as mock_put:
+
+        mock_put.return_value = (
+            mock_response
+        )
+
+        result = (
+            service.create_file(
+                path=
+                    "Learnings/LRN.999.md",
+
+                content=
+                    "Example",
+
+                message=
+                    "Create learning"
+            )
+        )
+
+    assert result[
+        "commit"
+    ][
+        "sha"
+    ] == "123"
 
 # ######################################
 # Has GitHub Token

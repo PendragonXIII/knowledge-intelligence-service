@@ -2,6 +2,8 @@ import os
 
 import requests
 
+import base64
+
 from app.services.github_configuration_service import (
     GitHubConfigurationService
 )
@@ -245,14 +247,35 @@ class GitHubRepositoryService:
         message: str
     ):
 
-        return {
+        encoded_content = (
+            base64.b64encode(
+                content.encode(
+                    "utf-8"
+                )
+            )
+            .decode(
+                "utf-8"
+            )
+        )
 
-            "path":
-                path,
+        response = requests.put(
+            f"{self.base_url}/"
+            f"{self.owner}/"
+            f"{self.repository}/contents/"
+            f"{path}",
 
-            "content":
-                content,
+            headers=self._headers(),
 
-            "message":
-                message
-        }
+            json={
+
+                "message":
+                    message,
+
+                "content":
+                    encoded_content
+            }
+        )
+
+        response.raise_for_status()
+
+        return response.json()

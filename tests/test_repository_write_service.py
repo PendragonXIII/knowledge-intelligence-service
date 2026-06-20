@@ -1,3 +1,5 @@
+from unittest.mock import Mock
+
 from app.services.repository_write_service import (
     RepositoryWriteService
 )
@@ -13,6 +15,17 @@ def test_create_file():
         RepositoryWriteService()
     )
 
+    service.github_service = Mock()
+
+    service.github_service.create_file.return_value = {
+
+        "commit": {
+
+            "sha":
+                "123"
+        }
+    }
+
     result = (
         service.create_file(
             {
@@ -25,17 +38,11 @@ def test_create_file():
         )
     )
 
-    assert result == {
-
-        "path":
-            "Learnings/LRN.999.md",
-
-        "content":
-            "Example",
-
-        "message":
-            "Create file"
-    }
+    assert result[
+        "commit"
+    ][
+        "sha"
+    ] == "123"
 
 # ######################################
 # Update File
