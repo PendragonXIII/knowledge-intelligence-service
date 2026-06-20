@@ -84,9 +84,7 @@ class KnowledgeReviewContextService:
             )
         )
 
-        content = obj[
-            "content"
-        ]
+        content = obj.content
 
         relationships = re.findall(
             r"\[\[([^\]]+)\]\]",
@@ -108,7 +106,13 @@ class KnowledgeReviewContextService:
         return {
 
             "object_id":
-                object_id,
+                obj.id,
+
+            "title":
+                obj.title,
+
+            "object_type":
+                obj.object_type,
 
             "content":
                 content,

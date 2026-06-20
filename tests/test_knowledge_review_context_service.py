@@ -4,6 +4,10 @@ from app.services.knowledge_review_context_service import (
     KnowledgeReviewContextService
 )
 
+from app.models.knowledge_object import (
+    KnowledgeObject
+)
+
 
 # ######################################
 # Build Review Context
@@ -27,48 +31,54 @@ def test_build_review_context():
             "EID.08"
         ):
 
-            return {
+            return KnowledgeObject(
 
-                "object_id":
-                    "EID.08",
+                id="EID.08",
 
-                "content":
-                    """
+                title="Example",
 
-                    [[CNS.005]]
+                object_type="Capability",
 
-                    [[LRN.023]]
+                content="""
 
-                    [[OP.999]]
+                [[CNS.005]]
 
-                    """
-            }
+                [[LRN.023]]
+
+                [[OP.999]]
+
+                """
+            )
 
         if object_id == (
             "CNS.005"
         ):
 
-            return {
+            return KnowledgeObject(
 
-                "object_id":
-                    "CNS.005",
+                id="CNS.005",
 
-                "content":
-                    "Constraint"
-            }
+                title="Constraint",
+
+                object_type="Constraint",
+
+                content="Constraint"
+            )
 
         if object_id == (
             "LRN.023"
         ):
 
-            return {
+            return KnowledgeObject(
 
-                "object_id":
-                    "LRN.023",
+                id="LRN.023",
 
-                "content":
-                    "Learning"
-            }
+                title="Learning",
+
+                object_type="Learning",
+
+                content="Learning"
+            )
 
         raise FileNotFoundError()
 

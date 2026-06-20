@@ -23,6 +23,10 @@ from app.services.repository_write_service import (
     RepositoryWriteService
 )
 
+from app.services.knowledge_review_context_service import (
+    KnowledgeReviewContextService
+)
+
 app = FastAPI(
     title="Knowledge Intelligence Service",
     version="0.1.0",
@@ -56,6 +60,14 @@ repository_content_service = (
 
 repository_write_service = (
     RepositoryWriteService()
+)
+
+review_context_service = (
+    KnowledgeReviewContextService()
+)
+
+review_context_service.retrieval_service = (
+    retrieval_service
 )
 
 
@@ -200,6 +212,27 @@ def get_repository_folder(
         repository_content_service
         .get_repository_folder(
             folder_name
+        )
+    )
+
+# ######################################
+# Review Context
+# ######################################
+
+@app.get(
+    "/review-context/{object_id}"
+)
+def get_review_context(
+    object_id: str,
+    _: None = Depends(
+        verify_api_key
+    )
+):
+
+    return (
+        review_context_service
+        .build_review_context(
+            object_id
         )
     )
 
