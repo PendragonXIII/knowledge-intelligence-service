@@ -17,7 +17,12 @@ from app.auth import (
 
 app = FastAPI(
     title="Knowledge Intelligence Service",
-    version="0.1.0"
+    version="0.1.0",
+    servers=[
+        {
+            "url": "https://knowledge-intelligence-service-production.up.railway.app"
+        }
+    ]
 )
 
 
