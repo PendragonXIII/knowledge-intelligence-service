@@ -77,3 +77,50 @@ def test_find_object_across_repository():
         service.find_object
         is not None
     )
+
+# ######################################
+# Get File By Path
+# ######################################
+
+def test_get_file_by_path():
+
+    service = (
+        GitHubRepositoryService()
+    )
+
+    content = (
+        service.get_file_by_path(
+            "README.md"
+        )
+    )
+
+    assert content is not None
+
+    assert len(
+        content
+    ) > 0
+
+# ######################################
+# Get File By Path Repository Override
+# ######################################
+
+def test_get_file_by_path_repository_override():
+
+    service = (
+        GitHubRepositoryService()
+    )
+
+    content = (
+        service.get_file_by_path(
+            path="README.md",
+            repository=(
+                "Knowledge-Intelligence-Platform"
+            )
+        )
+    )
+
+    assert content is not None
+
+    assert len(
+        content
+    ) > 0

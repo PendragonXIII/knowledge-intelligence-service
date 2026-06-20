@@ -15,6 +15,10 @@ from app.auth import (
     verify_api_key
 )
 
+from app.services.repository_content_service import (
+    RepositoryContentService
+)
+
 app = FastAPI(
     title="Knowledge Intelligence Service",
     version="0.1.0",
@@ -40,6 +44,10 @@ context_service = ContextAssemblyService(
 
 github_repository_service = (
     GitHubRepositoryService()
+)
+
+repository_content_service = (
+    RepositoryContentService()
 )
 
 
@@ -145,3 +153,44 @@ def github_object_test(
         "path": path,
         "preview": content[:200]
     }
+
+# ######################################
+# Repository File
+# ######################################
+
+@app.get("/repository/file")
+def get_repository_file(
+    repository: str,
+    path: str,
+    _: None = Depends(
+        verify_api_key
+    )
+):
+
+    return {
+        "content":
+            repository_content_service
+            .get_repository_file(
+                repository=repository,
+                path=path
+            )
+    }
+
+# ######################################
+# Repository Folder
+# ######################################
+
+@app.get("/repository/folder")
+def get_repository_folder(
+    folder_name: str,
+    _: None = Depends(
+        verify_api_key
+    )
+):
+
+    return (
+        repository_content_service
+        .get_repository_folder(
+            folder_name
+        )
+    )

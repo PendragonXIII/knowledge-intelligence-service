@@ -168,3 +168,43 @@ class GitHubRepositoryService:
         content_response.raise_for_status()
 
         return content_response.text
+    
+    # ######################################
+    # Get File By Path
+    # ######################################
+
+    def get_file_by_path(
+        self,
+        path: str,
+        repository: str | None = None
+    ):
+
+        repository_name = (
+            repository
+            if repository
+            else self.repository
+        )
+
+        response = requests.get(
+            f"{self.base_url}/"
+            f"{self.owner}/"
+            f"{repository_name}/contents/"
+            f"{path}",
+            headers=self._headers()
+        )
+
+        response.raise_for_status()
+
+        data = response.json()
+
+        download_url = data[
+            "download_url"
+        ]
+
+        content_response = requests.get(
+            download_url
+        )
+
+        content_response.raise_for_status()
+
+        return content_response.text
