@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 
 from app.services.retrieval_service import RetrievalService
+
+from app.services.github_retrieval_service import (
+    GitHubRetrievalService
+)
+
 from app.services.context_assembly_service import (
     ContextAssemblyService
 )
@@ -50,6 +55,10 @@ retrieval_service = RetrievalService(
     repository_path=repository_path
 )
 
+github_retrieval_service = (
+    GitHubRetrievalService()
+)
+
 context_service = ContextAssemblyService(
     repository_path=repository_path
 )
@@ -71,7 +80,7 @@ review_context_service = (
 )
 
 review_context_service.retrieval_service = (
-    retrieval_service
+    github_retrieval_service
 )
 
 
