@@ -1,3 +1,5 @@
+import os
+
 from unittest.mock import Mock
 from unittest.mock import patch
 
@@ -12,6 +14,18 @@ from app.services.engineering_repository_client import (
 
 def test_engineering_repository_client_creation():
 
+    os.environ[
+        "ENGINEERING_API_URL"
+    ] = (
+        "https://test-url"
+    )
+
+    os.environ[
+        "ENGINEERING_API_KEY"
+    ] = (
+        "test-key"
+    )
+
     client = (
         EngineeringRepositoryClient()
     )
@@ -21,7 +35,13 @@ def test_engineering_repository_client_creation():
     assert (
         client.base_url
         ==
-        "ENGINEERING_API_URL"
+        "https://test-url"
+    )
+
+    assert (
+        client.api_key
+        ==
+        "test-key"
     )
 
 # ######################################

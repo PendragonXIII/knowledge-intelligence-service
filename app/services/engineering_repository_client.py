@@ -1,4 +1,5 @@
 import requests
+import os
 
 
 # ######################################
@@ -10,7 +11,15 @@ class EngineeringRepositoryClient:
     def __init__(self):
 
         self.base_url = (
-            "ENGINEERING_API_URL"
+            os.getenv(
+                "ENGINEERING_API_URL"
+            )
+        )
+
+        self.api_key = (
+            os.getenv(
+                "ENGINEERING_API_KEY"
+            )
         )
 
     # ######################################
@@ -30,6 +39,12 @@ class EngineeringRepositoryClient:
 
                 "query":
                     query
+            },
+
+            headers={
+
+                "x-api-key":
+                    self.api_key
             }
         )
 
@@ -54,6 +69,12 @@ class EngineeringRepositoryClient:
 
                 "filename":
                     filename
+            },
+
+            headers={
+
+                "x-api-key":
+                    self.api_key
             }
         )
 
@@ -78,6 +99,12 @@ class EngineeringRepositoryClient:
 
                 "module_name":
                     module_name
+            },
+
+            headers={
+
+                "x-api-key":
+                    self.api_key
             }
         )
 
