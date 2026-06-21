@@ -228,7 +228,6 @@ def github_object_test(
 
 @app.get("/repository/file")
 def get_repository_file(
-    repository: str,
     path: str,
     _: None = Depends(
         verify_api_key
