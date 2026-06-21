@@ -21,15 +21,13 @@ class RepositoryContentService:
 
     def get_repository_file(
         self,
-        repository: str,
         path: str
     ):
 
         return (
             self.github_service
             .get_file_by_path(
-                path=path,
-                repository=repository
+                path=path
             )
         )
     
