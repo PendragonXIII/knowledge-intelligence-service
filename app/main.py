@@ -48,6 +48,10 @@ from app.services.engineering_repository_client import (
     EngineeringRepositoryClient
 )
 
+from app.services.engineering_code_evidence_service import (
+    EngineeringCodeEvidenceService
+)
+
 app = FastAPI(
     title="Knowledge Intelligence Service",
     version="0.1.0",
@@ -103,6 +107,14 @@ engineering_evidence_service = (
 )
 
 engineering_evidence_service.repository_client = (
+    EngineeringRepositoryClient()
+)
+
+engineering_code_evidence_service = (
+    EngineeringCodeEvidenceService()
+)
+
+engineering_code_evidence_service.repository_client = (
     EngineeringRepositoryClient()
 )
 
@@ -322,4 +334,27 @@ def get_governance_evidence(
     return (
         engineering_evidence_service
         .build_governance_evidence()
+    )
+
+# ######################################
+# Engineering Module Context
+# ######################################
+
+@app.get(
+    "/engineering/module-context"
+)
+def get_engineering_module_context(
+
+    module_name: str,
+
+    _: None = Depends(
+        verify_api_key
+    )
+):
+
+    return (
+        engineering_code_evidence_service
+        .get_module_context(
+            module_name
+        )
     )
