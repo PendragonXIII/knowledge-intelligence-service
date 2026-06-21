@@ -1,3 +1,7 @@
+# ######################################
+# Imnports
+# ######################################
+
 from fastapi import FastAPI
 
 from app.services.retrieval_service import RetrievalService
@@ -36,6 +40,14 @@ from app.services.knowledge_review_context_service import (
     KnowledgeReviewContextService
 )
 
+from app.services.engineering_evidence_service import (
+    EngineeringEvidenceService
+)
+
+from app.services.engineering_repository_client import (
+    EngineeringRepositoryClient
+)
+
 app = FastAPI(
     title="Knowledge Intelligence Service",
     version="0.1.0",
@@ -46,6 +58,9 @@ app = FastAPI(
     ]
 )
 
+# ######################################
+# Service-Initialisierungen
+# ######################################
 
 repository_path = (
     r"C:\Users\tkulg\OneDrive\AI Projects\Garden Knowledge"
@@ -81,6 +96,14 @@ review_context_service = (
 
 review_context_service.retrieval_service = (
     github_retrieval_service
+)
+
+engineering_evidence_service = (
+    EngineeringEvidenceService()
+)
+
+engineering_evidence_service.repository_client = (
+    EngineeringRepositoryClient()
 )
 
 
@@ -281,4 +304,22 @@ def update_repository_file(
         repository_write_service.update_file(
             request.model_dump()
         )
+    )
+
+# ######################################
+# Engineering Governance Evidence
+# ######################################
+
+@app.get(
+    "/engineering/governance-evidence"
+)
+def get_governance_evidence(
+    _: None = Depends(
+        verify_api_key
+    )
+):
+
+    return (
+        engineering_evidence_service
+        .build_governance_evidence()
     )
