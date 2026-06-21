@@ -238,7 +238,6 @@ def get_repository_file(
         "content":
             repository_content_service
             .get_repository_file(
-                repository=repository,
                 path=path
             )
     }
